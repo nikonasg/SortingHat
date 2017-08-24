@@ -34,7 +34,7 @@ public class HarryPotterQuiz {
         String[] answers4 = {"How courages you were", "The friends you had", "How great you were", "Your acheivments"};
         String[] answers5 = {"The dark path iluminated only by light posts", "The sunny fields path", "The stoned road path", "The confusing curvy path"};
         String[][] answers = {answers1, answers2, answers3, answers4, answers5};
-        String[] questions = {"How would you describe yourself", "What would you do if you found a wounded animal", "What is the first thing you would do with a new spell", "If there was a shortcut to go to hogwarts which one would you choose"};
+        String[] questions = {"How would you describe yourself", "What would you do if you found a wounded animal", "What is the first thing you would do with a new spell", "How would you want people to remember you as", "If there was a shortcut to go to hogwarts which one would you choose"};
         for (int ans = 0; ans < answers.length; ans++) {
             System.out.println(questions[ans]);
 
