@@ -1,5 +1,7 @@
 import java.util.*;
-
+//TODO randomization
+//enums?
+//tests
 public class HarryPotterQuiz {
     
     static final Map<Integer, String> CHOICE_TO_HOUSE = new HashMap<>();
@@ -18,11 +20,11 @@ public class HarryPotterQuiz {
     }
 
     public static void intro() {
-        System.out.println("Welcome to the sorting hat quiz."
-                + " You will be 10 givin questions to determine what house you will be put in."
-                + " There are four houses, Gryffindor, Hufflepuff, Ravenclaw, and Slytherin."
-                + " Each answer will contribute points to a house with the tribute most like your answer."
-                + " After you are done with the quiz, you will be told the house you most belong to."
+        System.out.println("Welcome to the sorting hat quiz.\n"
+                + " You will be 10 givin questions to determine what house you will be put in.\n"
+                + " There are four houses: " + CHOICE_TO_HOUSE.values().toString() + "\n"
+                + " Each answer will contribute points to a house with the tribute most like your answer.\n"
+                + " After you are done with the quiz, you will be told the house you most belong to.\n"
                 + " Here is the quiz.");
         System.out.println();
         System.out.println();
@@ -45,7 +47,7 @@ public class HarryPotterQuiz {
                 System.out.println(answer);
             }
             System.out.println();
-            System.out.println("Choose an answer by the order they are placed in.");
+            System.out.println("Choose an answer by the order they are placed in. 0-" + (CHOICE_TO_HOUSE.size() - 1));
             int playerChoice = scan.nextInt();
             scan.nextLine();
             System.out.println();
