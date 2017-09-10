@@ -2,9 +2,10 @@ import java.util.*;
 //TODO randomization
 //enums?
 //tests
+//error check user input
 public class HarryPotterQuiz {
     
-    static final Map<Integer, String> CHOICE_TO_HOUSE = new HashMap<>();
+    private static final Map<Integer, String> CHOICE_TO_HOUSE = new HashMap<>();
     
     static {
         CHOICE_TO_HOUSE.put(0, "Gryffindor");
@@ -14,12 +15,11 @@ public class HarryPotterQuiz {
     }
 
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
         intro();
         quiz();
     }
 
-    public static void intro() {
+    private static void intro() {
         System.out.println("Welcome to the sorting hat quiz.\n"
                 + " You will be 10 givin questions to determine what house you will be put in.\n"
                 + " There are four houses: " + CHOICE_TO_HOUSE.values().toString() + "\n"
@@ -30,7 +30,7 @@ public class HarryPotterQuiz {
         System.out.println();
     }
 
-    public static void quiz() {
+    private static void quiz() {
         Map<Integer, Integer> playerChoiceToFrequency = new HashMap<>();
         Scanner scan = new Scanner(System.in);
         String[] answers1 = {"Bold", "Kind", "Bossy", "Cunning"};
@@ -54,13 +54,11 @@ public class HarryPotterQuiz {
 
             Integer currentFreq = playerChoiceToFrequency.get(playerChoice);
             playerChoiceToFrequency.put(playerChoice, (currentFreq != null ? currentFreq + 1: 1));
-//            Integer currentFreq = playerChoiceToFrequency.getOrDefault(playerChoice, 0);
-//            playerChoiceToFrequency.put(playerChoice, currentFreq + 1);
         }
-        System.out.println("You were sorted into the " + mostPoints(playerChoiceToFrequency) + " house!");
+        System.out.println("You were sorted into the " + getHouse(playerChoiceToFrequency) + " house!");
     }
 
-    private static String mostPoints(Map<Integer, Integer> playerChoiceToFrequency) {
+    private static String getHouse(Map<Integer, Integer> playerChoiceToFrequency) {
         Integer highestFrequency = -1;
         Integer mostFrequentPlayerChoice = -1;
         for (Map.Entry<Integer, Integer> entry : playerChoiceToFrequency.entrySet()) {
@@ -69,7 +67,7 @@ public class HarryPotterQuiz {
                 mostFrequentPlayerChoice = entry.getKey();
             }
         }
-        return CHOICE_TO_HOUSE.get(mostFrequentPlayerChoice);
+        return CHOICE_TO_HOUSE.getOrDefault(mostFrequentPlayerChoice, "muggle");
     }
 
 }
