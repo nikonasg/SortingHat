@@ -1,13 +1,20 @@
-
-import java.util.Scanner;
+import java.util.*;
 
 public class HarryPotterQuiz {
+    
+    static final Map<Integer, String> CHOICE_TO_HOUSE = new HashMap<>();
+    
+    static {
+        CHOICE_TO_HOUSE.put(0, "Gryffindor");
+        CHOICE_TO_HOUSE.put(1, "Hufflepuff");
+        CHOICE_TO_HOUSE.put(2, "Slytherin");
+        CHOICE_TO_HOUSE.put(3, "Ravenclaw");
+    }
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         intro();
         quiz();
-
     }
 
     public static void intro() {
@@ -22,11 +29,7 @@ public class HarryPotterQuiz {
     }
 
     public static void quiz() {
-        int gryffindor = 0;
-        int hufflepuff = 0;
-        int slytherin = 0;
-        int ravenclaw = 0;
-
+        Map<Integer, Integer> playerChoiceToFrequency = new HashMap<>();
         Scanner scan = new Scanner(System.in);
         String[] answers1 = {"Bold", "Kind", "Bossy", "Cunning"};
         String[] answers2 = {"Help it", "Alert somebody of it", "Ignore it", "Find out what's wrong with it"};
@@ -38,8 +41,8 @@ public class HarryPotterQuiz {
         for (int ans = 0; ans < answers.length; ans++) {
             System.out.println(questions[ans]);
 
-            for (int choice = 0; choice < answers[ans].length; choice++) {
-                System.out.println(answers[ans][choice]);
+            for (String answer : answers[ans]) {
+                System.out.println(answer);
             }
             System.out.println();
             System.out.println("Choose an answer by the order they are placed in.");
@@ -47,41 +50,24 @@ public class HarryPotterQuiz {
             scan.nextLine();
             System.out.println();
 
-            switch (playerChoice) {
-                case 0: {
-                    gryffindor++;
-                    break;
-                }
-                case 1: {
-                    hufflepuff++;
-                    break;
-                }
-                case 2: {
-                    slytherin++;
-                    break;
-                }
-                case 3: {
-                    ravenclaw++;
-                    break;
-                }
-            }
-
+            Integer currentFreq = playerChoiceToFrequency.get(playerChoice);
+            playerChoiceToFrequency.put(playerChoice, (currentFreq != null ? currentFreq + 1: 1));
+//            Integer currentFreq = playerChoiceToFrequency.getOrDefault(playerChoice, 0);
+//            playerChoiceToFrequency.put(playerChoice, currentFreq + 1);
         }
-        String house = "";
-        System.out.println("You were sorted into the " + mostPoints(gryffindor, hufflepuff, slytherin, ravenclaw, house) + " house!");
+        System.out.println("You were sorted into the " + mostPoints(playerChoiceToFrequency) + " house!");
     }
 
-    private static String mostPoints(int gryffindor, int hufflepuff, int slytherin, int ravenclaw, String house) {
-        if (gryffindor > hufflepuff && gryffindor > slytherin && gryffindor > ravenclaw) {
-            house = "Gryffindor";
-        } else if (hufflepuff > slytherin && hufflepuff > ravenclaw) {
-            house = "Hufflepuff";
-        } else if (slytherin > ravenclaw) {
-            house = "Slytherin";
-        } else {
-            house = "Ravenclaw";
+    private static String mostPoints(Map<Integer, Integer> playerChoiceToFrequency) {
+        Integer highestFrequency = -1;
+        Integer mostFrequentPlayerChoice = -1;
+        for (Map.Entry<Integer, Integer> entry : playerChoiceToFrequency.entrySet()) {
+            if (highestFrequency <= entry.getValue()) {
+                highestFrequency = entry.getValue();
+                mostFrequentPlayerChoice = entry.getKey();
+            }
         }
-        return house;
+        return CHOICE_TO_HOUSE.get(mostFrequentPlayerChoice);
     }
 
 }
