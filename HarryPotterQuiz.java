@@ -41,14 +41,13 @@ public class HarryPotterQuiz {
         String[][] answers = {answers1, answers2, answers3, answers4, answers5};
         String[] questions = {"How would you describe yourself", "What would you do if you found a wounded animal", "What is the first thing you would do with a new spell", "How would you want people to remember you as", "If there was a shortcut to go to hogwarts which one would you choose"};
         for (int ans = 0; ans < answers.length; ans++) {
-            System.out.println(questions[ans]);
+            System.out.println(questions[ans] + ":\n");
+            
+            int offset = randomIteration(answers[ans]);
 
-            for (String answer : answers[ans]) {
-                System.out.println(answer);
-            }
             System.out.println();
             System.out.println("Choose an answer by the order they are placed in. 0-" + (CHOICE_TO_HOUSE.size() - 1));
-            int playerChoice = scan.nextInt();
+            int playerChoice = (scan.nextInt() + offset) % CHOICE_TO_HOUSE.size();
             scan.nextLine();
             System.out.println();
 
@@ -56,6 +55,14 @@ public class HarryPotterQuiz {
             playerChoiceToFrequency.put(playerChoice, (currentFreq != null ? currentFreq + 1: 1));
         }
         System.out.println("You were sorted into the " + getHouse(playerChoiceToFrequency) + " house!");
+    }
+    
+    private static int randomIteration(String[] answers) {
+        int offset = (int)(Math.random() * CHOICE_TO_HOUSE.size());
+        for (int i = offset, count = 0; count < answers.length; i = (i + 1) % answers.length, count++) {
+            System.out.println(answers[i]);
+        }
+        return offset;
     }
 
     private static String getHouse(Map<Integer, Integer> playerChoiceToFrequency) {
