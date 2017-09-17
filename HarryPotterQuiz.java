@@ -3,6 +3,35 @@ import java.util.*;
 //enums?
 //tests
 //error check user input
+
+class House {
+    private final String[] answerChoices;
+    private final String name;
+    private final int id;
+    
+    House(String[] answerChoices, String name, int id) {
+        this.answerChoices = answerChoices;
+        this.name = name;
+        this.id = id;
+    }
+    
+    public String getName() {
+        return this.name;
+    }
+    
+    public int getId() {
+        return this.id;
+    }
+    
+    public String getAnswerChoice(int question) {
+        return this.answerChoices[question];
+    }
+    
+    public String[] getAnswerChoices() {
+        return this.answerChoices;
+    }
+}
+
 public class HarryPotterQuiz {
     
     private static final Map<Integer, String> CHOICE_TO_HOUSE = new HashMap<>();
@@ -15,6 +44,9 @@ public class HarryPotterQuiz {
     }
 
     public static void main(String[] args) {
+        House h = new House(new String[]{}, "", -1);
+        
+        
         intro();
         quiz();
     }
