@@ -30,23 +30,23 @@ class House {
     public String[] getAnswerChoices() {
         return this.answerChoices;
     }
+    
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }
 
 public class HarryPotterQuiz {
-    
-    private static final Map<Integer, String> CHOICE_TO_HOUSE = new HashMap<>();
-    
-    static {
-        CHOICE_TO_HOUSE.put(0, "Gryffindor");
-        CHOICE_TO_HOUSE.put(1, "Hufflepuff");
-        CHOICE_TO_HOUSE.put(2, "Slytherin");
-        CHOICE_TO_HOUSE.put(3, "Ravenclaw");
-    }
+
+    static final House[] HOUSES = {
+        new House(new String[]{"Bold", "Help it", "Find out more about it", "How courages you were", "The dark path illuminated only by a lamp post"}, "Gryffindor", 0), 
+        new House(new String[]{"Kind", "Alert somebody of it", "Find out when it is best used", "The friends you had", "The sunny fields path"}, "Hufflepuff", 1), 
+        new House(new String[]{"Bossy", "Igrnore it", "Use it on something or someone", "How great you were", "The stoned road path"}, "Slytherin", 2),
+        new House(new String[]{"Cunning", "Find out what's wrong with it", "Use it to help me in a way that's useful", "Your acheivments", "The confusing-interesting curvy path" }, "Ravenclaw", 3)
+    };
 
     public static void main(String[] args) {
-        House h = new House(new String[]{}, "", -1);
-        
-        
         intro();
         quiz();
     }
@@ -54,7 +54,7 @@ public class HarryPotterQuiz {
     private static void intro() {
         System.out.println("Welcome to the sorting hat quiz.\n"
                 + " You will be 10 givin questions to determine what house you will be put in.\n"
-                + " There are four houses: " + CHOICE_TO_HOUSE.values().toString() + "\n"
+                + " There are four houses: " + Arrays.toString(HOUSES) + "\n"
                 + " Each answer will contribute points to a house with the tribute most like your answer.\n"
                 + " After you are done with the quiz, you will be told the house you most belong to.\n"
                 + " Here is the quiz.");
@@ -62,24 +62,18 @@ public class HarryPotterQuiz {
         System.out.println();
     }
 
-    private static void quiz() {
+    private static void quiz() { 
         Map<Integer, Integer> playerChoiceToFrequency = new HashMap<>();
         Scanner scan = new Scanner(System.in);
-        String[] answers1 = {"Bold", "Kind", "Bossy", "Cunning"};
-        String[] answers2 = {"Help it", "Alert somebody of it", "Ignore it", "Find out what's wrong with it"};
-        String[] answers3 = {"Find out more about it", "Find out when it is best used", "Use it on something or someone", "Use it to help me in a way it's useful"};
-        String[] answers4 = {"How courages you were", "The friends you had", "How great you were", "Your acheivments"};
-        String[] answers5 = {"The dark path iluminated only by light posts", "The sunny fields path", "The stoned road path", "The confusing curvy path"};
-        String[][] answers = {answers1, answers2, answers3, answers4, answers5};
         String[] questions = {"How would you describe yourself", "What would you do if you found a wounded animal", "What is the first thing you would do with a new spell", "How would you want people to remember you as", "If there was a shortcut to go to hogwarts which one would you choose"};
-        for (int ans = 0; ans < answers.length; ans++) {
+        for (int ans = 0; ans < questions.length; ans++) {
             System.out.println(questions[ans] + ":\n");
             
-            int offset = randomIteration(answers[ans]);
+            int offset = randomIteration(ans);
 
             System.out.println();
-            System.out.println("Choose an answer by the order they are placed in. 0-" + (CHOICE_TO_HOUSE.size() - 1));
-            int playerChoice = (scan.nextInt() + offset) % CHOICE_TO_HOUSE.size();
+            System.out.println("Choose an answer by the order they are placed in. 0-" + (HOUSES.length - 1));
+            int playerChoice = (scan.nextInt() + offset) % HOUSES.length;
             scan.nextLine();
             System.out.println();
 
@@ -89,10 +83,10 @@ public class HarryPotterQuiz {
         System.out.println("You were sorted into the " + getHouse(playerChoiceToFrequency) + " house!");
     }
     
-    private static int randomIteration(String[] answers) {
-        int offset = (int)(Math.random() * CHOICE_TO_HOUSE.size());
-        for (int i = offset, count = 0; count < answers.length; i = (i + 1) % answers.length, count++) {
-            System.out.println(answers[i]);
+    private static int randomIteration(int ans) {
+        int offset = (int)(Math.random() * HOUSES.length);
+        for (int i = offset, count = 0; count < HOUSES.length; i = (i + 1) % HOUSES.length, count++) {
+            System.out.println(HOUSES[i].getAnswerChoice(ans));
         }
         return offset;
     }
@@ -106,7 +100,7 @@ public class HarryPotterQuiz {
                 mostFrequentPlayerChoice = entry.getKey();
             }
         }
-        return CHOICE_TO_HOUSE.getOrDefault(mostFrequentPlayerChoice, "muggle");
+        return HOUSES[mostFrequentPlayerChoice].getName();
     }
 
 }
