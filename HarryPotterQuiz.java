@@ -3,24 +3,44 @@ import java.util.*;
 //enums?
 //tests
 //error check user input
+/*
 
-class House {
+       enum
+     /      \
+    /        \
+String       int
+
+House.GRYFFINDOR -> enum
+House.GRYFFINDOR.name() -> String "GRYFFINDOR"
+House.GRYFFINDOR.ordinal() -> int 0
+
+House.values() -> enum array [House.GRYFFINDOR, House.blahblah ....]
+
+int into enum
+House.values()[0] -> House.GRYFFINDOR
+
+String into enum
+House e = House.valueOf("GRYFFINDOR"); -> House.GRYFFINDOR
+
+int into String
+House.values()[0].name()
+           step 1|step 2
+
+String into an int
+House.valueOf("GRYFFINDOR").ordinal()
+                     step 1|step 2
+*/
+
+enum House {
+    GRYFFINDOR(new String[]{"Bold", "Help it", "Find out more about it", "How courages you were", "The dark path illuminated only by a lamp post"}),
+    HUFFLEPUFF(new String[]{"Kind", "Alert somebody of it", "Find out when it is best used", "The friends you had", "The sunny fields path"}),
+    SLYTHERIN(new String[]{"Bossy", "Igrnore it", "Use it on something or someone", "How great you were", "The stoned road path"}),
+    RAVENCLAW(new String[]{"Cunning", "Find out what's wrong with it", "Use it to help me in a way that's useful", "Your acheivments", "The confusing-interesting curvy path" });
+    
     private final String[] answerChoices;
-    private final String name;
-    private final int id;
     
-    House(String[] answerChoices, String name, int id) {
+    House(String[] answerChoices) {
         this.answerChoices = answerChoices;
-        this.name = name;
-        this.id = id;
-    }
-    
-    public String getName() {
-        return this.name;
-    }
-    
-    public int getId() {
-        return this.id;
     }
     
     public String getAnswerChoice(int question) {
@@ -33,18 +53,11 @@ class House {
     
     @Override
     public String toString() {
-        return this.name;
+        return this.name();
     }
 }
 
 public class HarryPotterQuiz {
-
-    static final House[] HOUSES = {
-        new House(new String[]{"Bold", "Help it", "Find out more about it", "How courages you were", "The dark path illuminated only by a lamp post"}, "Gryffindor", 0), 
-        new House(new String[]{"Kind", "Alert somebody of it", "Find out when it is best used", "The friends you had", "The sunny fields path"}, "Hufflepuff", 1), 
-        new House(new String[]{"Bossy", "Igrnore it", "Use it on something or someone", "How great you were", "The stoned road path"}, "Slytherin", 2),
-        new House(new String[]{"Cunning", "Find out what's wrong with it", "Use it to help me in a way that's useful", "Your acheivments", "The confusing-interesting curvy path" }, "Ravenclaw", 3)
-    };
 
     public static void main(String[] args) {
         intro();
@@ -54,7 +67,7 @@ public class HarryPotterQuiz {
     private static void intro() {
         System.out.println("Welcome to the sorting hat quiz.\n"
                 + " You will be 10 givin questions to determine what house you will be put in.\n"
-                + " There are four houses: " + Arrays.toString(HOUSES) + "\n"
+                + " There are four houses: " + Arrays.toString(House.values()) + "\n"
                 + " Each answer will contribute points to a house with the tribute most like your answer.\n"
                 + " After you are done with the quiz, you will be told the house you most belong to.\n"
                 + " Here is the quiz.");
@@ -72,8 +85,8 @@ public class HarryPotterQuiz {
             int offset = randomIteration(ans);
 
             System.out.println();
-            System.out.println("Choose an answer by the order they are placed in. 0-" + (HOUSES.length - 1));
-            int playerChoice = (scan.nextInt() + offset) % HOUSES.length;
+            System.out.println("Choose an answer by the order they are placed in. 0-" + (House.values().length - 1));
+            int playerChoice = (scan.nextInt() + offset) % House.values().length;
             scan.nextLine();
             System.out.println();
 
@@ -84,9 +97,9 @@ public class HarryPotterQuiz {
     }
     
     private static int randomIteration(int ans) {
-        int offset = (int)(Math.random() * HOUSES.length);
-        for (int i = offset, count = 0; count < HOUSES.length; i = (i + 1) % HOUSES.length, count++) {
-            System.out.println(HOUSES[i].getAnswerChoice(ans));
+        int offset = (int)(Math.random() * House.values().length);
+        for (int i = offset, count = 0; count < House.values().length; i = (i + 1) % House.values().length, count++) {
+            System.out.println(House.values()[i].getAnswerChoice(ans));
         }
         return offset;
     }
@@ -100,7 +113,7 @@ public class HarryPotterQuiz {
                 mostFrequentPlayerChoice = entry.getKey();
             }
         }
-        return HOUSES[mostFrequentPlayerChoice].getName();
+        return House.values()[mostFrequentPlayerChoice].name();
     }
 
 }
