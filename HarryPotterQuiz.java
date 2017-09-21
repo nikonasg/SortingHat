@@ -75,8 +75,8 @@ public class HarryPotterQuiz {
         System.out.println();
     }
 
-    private static void quiz() { 
-        Map<Integer, Integer> playerChoiceToFrequency = new HashMap<>();
+    private static void quiz() {
+        Map<House, Integer> playerChoiceToFrequency = new EnumMap<>(House.class);
         Scanner scan = new Scanner(System.in);
         String[] questions = {"How would you describe yourself", "What would you do if you found a wounded animal", "What is the first thing you would do with a new spell", "How would you want people to remember you as", "If there was a shortcut to go to hogwarts which one would you choose"};
         for (int ans = 0; ans < questions.length; ans++) {
@@ -90,8 +90,8 @@ public class HarryPotterQuiz {
             scan.nextLine();
             System.out.println();
 
-            Integer currentFreq = playerChoiceToFrequency.get(playerChoice);
-            playerChoiceToFrequency.put(playerChoice, (currentFreq != null ? currentFreq + 1: 1));
+            Integer currentFreq = playerChoiceToFrequency.get(House.values()[playerChoice]);
+            playerChoiceToFrequency.put(House.values()[playerChoice], (currentFreq != null ? currentFreq + 1: 1));
         }
         System.out.println("You were sorted into the " + getHouse(playerChoiceToFrequency) + " house!");
     }
@@ -104,16 +104,16 @@ public class HarryPotterQuiz {
         return offset;
     }
 
-    private static String getHouse(Map<Integer, Integer> playerChoiceToFrequency) {
+    private static String getHouse(Map<House, Integer> playerChoiceToFrequency) {
         Integer highestFrequency = -1;
-        Integer mostFrequentPlayerChoice = -1;
-        for (Map.Entry<Integer, Integer> entry : playerChoiceToFrequency.entrySet()) {
+        House mostFrequentHouse = null;
+        for (Map.Entry<House, Integer> entry : playerChoiceToFrequency.entrySet()) {
             if (highestFrequency <= entry.getValue()) {
                 highestFrequency = entry.getValue();
-                mostFrequentPlayerChoice = entry.getKey();
+                mostFrequentHouse = entry.getKey();
             }
         }
-        return House.values()[mostFrequentPlayerChoice].name();
+        return mostFrequentHouse.name();
     }
 
 }
