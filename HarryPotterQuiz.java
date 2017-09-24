@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 import java.util.Map;
 import java.util.EnumMap;
@@ -49,6 +48,8 @@ enum House {
 }
 
 public class HarryPotterQuiz {
+    
+    private static final boolean RANDOM_OFFSET = true;
 
     public static void main(String[] args) {
         intro();
@@ -72,7 +73,7 @@ public class HarryPotterQuiz {
         for (int ans = 0; ans < House.getQuestionsLength(); ans++) {
             System.out.println(House.getQuestion(ans) + ":\n");
 
-            int offset = randomIteration(ans);
+            int offset = printAnswers(ans);
 
             System.out.println();
             System.out.println("Choose an answer by the order they are placed in. 0-" + (House.values().length - 1));
@@ -86,8 +87,8 @@ public class HarryPotterQuiz {
         System.out.println("You were sorted into the " + getHouse(playerChoiceToFrequency) + " house!");
     }
 
-    private static int randomIteration(int ans) {
-        int offset = (int) (Math.random() * House.values().length);
+    private static int printAnswers(int ans) {
+        int offset = RANDOM_OFFSET ? (int) (Math.random() * House.values().length): 0;
         for (int i = offset, count = 0; count < House.values().length; i = (i + 1) % House.values().length, count++) {
             System.out.println(House.values()[i].getAnswerChoice(ans));
         }
