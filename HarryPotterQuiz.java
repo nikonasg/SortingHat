@@ -1,56 +1,47 @@
-import java.util.*;
-//TODO randomization
-//enums?
+
+import java.util.Scanner;
+import java.util.Map;
+import java.util.EnumMap;
+import java.util.Arrays;
+//TODO
 //tests
 //error check user input
-/*
-
-       enum
-     /      \
-    /        \
-String       int
-
-House.GRYFFINDOR -> enum
-House.GRYFFINDOR.name() -> String "GRYFFINDOR"
-House.GRYFFINDOR.ordinal() -> int 0
-
-House.values() -> enum array [House.GRYFFINDOR, House.blahblah ....]
-
-int into enum
-House.values()[0] -> House.GRYFFINDOR
-
-String into enum
-House e = House.valueOf("GRYFFINDOR"); -> House.GRYFFINDOR
-
-int into String
-House.values()[0].name()
-           step 1|step 2
-
-String into an int
-House.valueOf("GRYFFINDOR").ordinal()
-                     step 1|step 2
-*/
 
 enum House {
     GRYFFINDOR(new String[]{"Bold", "Help it", "Find out more about it", "How courages you were", "The dark path illuminated only by a lamp post"}),
     HUFFLEPUFF(new String[]{"Kind", "Alert somebody of it", "Find out when it is best used", "The friends you had", "The sunny fields path"}),
     SLYTHERIN(new String[]{"Bossy", "Igrnore it", "Use it on something or someone", "How great you were", "The stoned road path"}),
-    RAVENCLAW(new String[]{"Cunning", "Find out what's wrong with it", "Use it to help me in a way that's useful", "Your acheivments", "The confusing-interesting curvy path" });
-    
+    RAVENCLAW(new String[]{"Cunning", "Find out what's wrong with it", "Use it to help me in a way that's useful", "Your acheivments", "The confusing-interesting curvy path"});
+
+    private static final String[] QUESTIONS = createQuestions(new String[]{"How would you describe yourself", "What would you do if you found a wounded animal", "What is the first thing you would do with a new spell", "How would you want people to remember you as", "If there was a shortcut to go to hogwarts which one would you choose"});
     private final String[] answerChoices;
-    
+
     House(String[] answerChoices) {
         this.answerChoices = answerChoices;
     }
-    
+
+    private static String[] createQuestions(String[] q) {
+        for (House h : House.values()) {
+            if (h.answerChoices.length != q.length) {
+                throw new IllegalStateException("Answer choice quantity for " + h.name()
+                        + " is " + h.answerChoices.length + ". Question quantity is " + q.length);
+            }
+        }
+        return q;
+    }
+
+    public static int getQuestionsLength() {
+        return QUESTIONS.length;
+    }
+
+    public static String getQuestion(int question) {
+        return QUESTIONS[question];
+    }
+
     public String getAnswerChoice(int question) {
         return this.answerChoices[question];
     }
-    
-    public String[] getAnswerChoices() {
-        return this.answerChoices;
-    }
-    
+
     @Override
     public String toString() {
         return this.name();
@@ -78,10 +69,9 @@ public class HarryPotterQuiz {
     private static void quiz() {
         Map<House, Integer> playerChoiceToFrequency = new EnumMap<>(House.class);
         Scanner scan = new Scanner(System.in);
-        String[] questions = {"How would you describe yourself", "What would you do if you found a wounded animal", "What is the first thing you would do with a new spell", "How would you want people to remember you as", "If there was a shortcut to go to hogwarts which one would you choose"};
-        for (int ans = 0; ans < questions.length; ans++) {
-            System.out.println(questions[ans] + ":\n");
-            
+        for (int ans = 0; ans < House.getQuestionsLength(); ans++) {
+            System.out.println(House.getQuestion(ans) + ":\n");
+
             int offset = randomIteration(ans);
 
             System.out.println();
@@ -91,13 +81,13 @@ public class HarryPotterQuiz {
             System.out.println();
 
             Integer currentFreq = playerChoiceToFrequency.get(House.values()[playerChoice]);
-            playerChoiceToFrequency.put(House.values()[playerChoice], (currentFreq != null ? currentFreq + 1: 1));
+            playerChoiceToFrequency.put(House.values()[playerChoice], (currentFreq != null ? currentFreq + 1 : 1));
         }
         System.out.println("You were sorted into the " + getHouse(playerChoiceToFrequency) + " house!");
     }
-    
+
     private static int randomIteration(int ans) {
-        int offset = (int)(Math.random() * House.values().length);
+        int offset = (int) (Math.random() * House.values().length);
         for (int i = offset, count = 0; count < House.values().length; i = (i + 1) % House.values().length, count++) {
             System.out.println(House.values()[i].getAnswerChoice(ans));
         }
