@@ -7,6 +7,7 @@ import java.util.Arrays;
 //error check user input
 
 enum House {
+    //To add a house, make another entry here
     GRYFFINDOR(new String[]{"Bold", "Help it", "Find out more about it", "How courages you were", "The dark path illuminated only by a lamp post"}),
     HUFFLEPUFF(new String[]{"Kind", "Alert somebody of it", "Find out when it is best used", "The friends you had", "The sunny fields path"}),
     SLYTHERIN(new String[]{"Bossy", "Igrnore it", "Use it on something or someone", "How great you were", "The stoned road path"}),
@@ -19,6 +20,7 @@ enum House {
         this.answerChoices = answerChoices;
     }
 
+    //Verify same length between questions and answers
     private static String[] createQuestions(String[] q) {
         for (House h : House.values()) {
             if (h.answerChoices.length != q.length) {
@@ -49,7 +51,7 @@ enum House {
 
 public class HarryPotterQuiz {
     
-    private static final boolean RANDOM_OFFSET = true;
+    private static final boolean RANDOM_OFFSET = true; //For random order when displaying answers
 
     public static void main(String[] args) {
         intro();
@@ -72,15 +74,14 @@ public class HarryPotterQuiz {
         Scanner scan = new Scanner(System.in);
         for (int ans = 0; ans < House.getQuestionsLength(); ans++) {
             System.out.println(House.getQuestion(ans) + ":\n");
-
             int offset = printAnswers(ans);
-
             System.out.println();
             System.out.println("Choose an answer by the order they are placed in. 0-" + (House.values().length - 1));
             int playerChoice = (scan.nextInt() + offset) % House.values().length;
             scan.nextLine();
             System.out.println();
-
+            
+            //adding to the frequency and putting answer in map
             Integer currentFreq = playerChoiceToFrequency.get(House.values()[playerChoice]);
             playerChoiceToFrequency.put(House.values()[playerChoice], (currentFreq != null ? currentFreq + 1 : 1));
         }
@@ -95,6 +96,7 @@ public class HarryPotterQuiz {
         return offset;
     }
 
+    //gets most frequent choice and turns that into house string
     private static String getHouse(Map<House, Integer> playerChoiceToFrequency) {
         Integer highestFrequency = -1;
         House mostFrequentHouse = null;
@@ -106,5 +108,4 @@ public class HarryPotterQuiz {
         }
         return mostFrequentHouse.name();
     }
-
 }
