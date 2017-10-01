@@ -1,10 +1,10 @@
+
 import java.util.Scanner;
 import java.util.Map;
 import java.util.EnumMap;
 import java.util.Arrays;
 //TODO
 //tests
-//error check user input
 
 enum House {
     //To add a house, make another entry here
@@ -50,7 +50,7 @@ enum House {
 }
 
 public class HarryPotterQuiz {
-    
+
     private static final boolean RANDOM_OFFSET = true; //For random order when displaying answers
 
     public static void main(String[] args) {
@@ -76,11 +76,9 @@ public class HarryPotterQuiz {
             System.out.println(House.getQuestion(ans) + ":\n");
             int offset = printAnswers(ans);
             System.out.println();
-            System.out.println("Choose an answer by the order they are placed in. 0-" + (House.values().length - 1));
-            int playerChoice = (scan.nextInt() + offset) % House.values().length;
-            scan.nextLine();
+            int playerChoice = (getInt(scan) + offset) % House.values().length;
             System.out.println();
-            
+
             //adding to the frequency and putting answer in map
             Integer currentFreq = playerChoiceToFrequency.get(House.values()[playerChoice]);
             playerChoiceToFrequency.put(House.values()[playerChoice], (currentFreq != null ? currentFreq + 1 : 1));
@@ -88,8 +86,28 @@ public class HarryPotterQuiz {
         System.out.println("You were sorted into the " + getHouse(playerChoiceToFrequency) + " house!");
     }
 
+    private static int getInt(Scanner scan) {
+        int check = -1;
+        boolean invalidNumber;
+        do {
+            System.out.println("Choose an answer by the order they are placed in. 0-" + (House.values().length - 1));
+            while (!scan.hasNextInt()) {
+                String notInt = scan.nextLine();
+                System.out.println("\n" + notInt + " is not an int.");
+                System.out.println("Choose an answer by the order they are placed in. 0-" + (House.values().length - 1));
+            }
+            check = scan.nextInt();
+            scan.nextLine();
+            invalidNumber = check >= House.values().length || check < 0;
+            if (invalidNumber) {
+                System.out.println("The number " + check + " isn't between 0-" + (House.values().length - 1));
+            }
+        } while (invalidNumber);
+        return check;
+    }
+
     private static int printAnswers(int ans) {
-        int offset = RANDOM_OFFSET ? (int) (Math.random() * House.values().length): 0;
+        int offset = RANDOM_OFFSET ? (int) (Math.random() * House.values().length) : 0;
         for (int i = offset, count = 0; count < House.values().length; i = (i + 1) % House.values().length, count++) {
             System.out.println(House.values()[i].getAnswerChoice(ans));
         }
