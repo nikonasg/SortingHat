@@ -84,6 +84,7 @@ public class HarryPotterQuiz {
             playerChoiceToFrequency.put(House.values()[playerChoice], (currentFreq != null ? currentFreq + 1 : 1));
         }
         System.out.println("You were sorted into the " + getHouse(playerChoiceToFrequency) + " house!");
+        new AePlayWave("OOT_Fanfare_SmallItem.wav").start();
     }
 
     private static int getInt(Scanner scan) {
