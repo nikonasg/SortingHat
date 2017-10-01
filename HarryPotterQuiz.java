@@ -1,10 +1,7 @@
-
 import java.util.Scanner;
 import java.util.Map;
 import java.util.EnumMap;
 import java.util.Arrays;
-//TODO
-//tests
 
 enum House {
     //To add a house, make another entry here
@@ -49,7 +46,7 @@ enum House {
     }
 }
 
-public class HarryPotterQuiz {
+class HarryPotterQuiz {
 
     private static final boolean RANDOM_OFFSET = true; //For random order when displaying answers
 
@@ -116,7 +113,7 @@ public class HarryPotterQuiz {
     }
 
     //gets most frequent choice and turns that into house string
-    private static String getHouse(Map<House, Integer> playerChoiceToFrequency) {
+    static String getHouse(Map<House, Integer> playerChoiceToFrequency) {
         Integer highestFrequency = -1;
         House mostFrequentHouse = null;
         for (Map.Entry<House, Integer> entry : playerChoiceToFrequency.entrySet()) {
